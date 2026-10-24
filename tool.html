@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>HOÀNG VIP WIN - Tool AI</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+body { overflow: hidden; }
+#gameContainer { position: fixed; inset: 0; background: #000; z-index: 1; }
+#mainIframe { width: 100%; height: 100%; border: none; }
+.menu-top { position: fixed; top: 10px; left: 10px; z-index: 10005; display: flex; gap: 8px; }
+.btn-toggle { width: 42px; height: 42px; background: rgba(10,2,4,0.95); border: 2px solid var(--neon-red); color: var(--neon-red); border-radius: 10px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+.dropdown { display: none; position: absolute; top: 50px; left: 0; background: rgba(15,2,6,0.98); border: 1px solid var(--neon-red); border-radius: 10px; padding: 8px; width: 240px; z-index: 10006; flex-direction: column; gap: 6px; backdrop-filter: blur(8px); }
+.dropdown.show { display: flex; }
+.menu-item { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,0,51,0.3); color: #fff; padding: 10px 12px; font-size: 12px; font-weight: 800; border-radius: 6px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 10px; }
+.menu-item.exit { background: rgba(255,0,51,0.2); border-color: var(--neon-red); color: #ff99aa; }
+/* Robot 3D */
+.robot-node { position: absolute; z-index: 20000; bottom: 80px; right: 20px; touch-action: none; cursor: grab; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); transform-style: preserve-3d; will-change: transform; }
+.robot-node:active { cursor: grabbing; }
+.robot-node.hidden { display: none; }
+.robot-inner { width: 320px; position: relative; display: flex; flex-direction: column; align-items: center; pointer-events: none; transform-style: preserve-3d; transition: transform 0.4s ease; }
+.robot-node:hover .robot-inner { transform: translateY(-5px) scale(1.02); }
+.robot-gif { width: 310px; height: 310px; object-fit: contain; filter: drop-shadow(0 0 25px rgba(255,0,51,0.5)); }
+.bot-panel { position: absolute; top: 110px; left: 58%; transform: translateX(-50%); width: 130px; background: rgba(10,2,5,0.85); backdrop-filter: blur(6px); border: 2px solid var(--neon-red); border-radius: 12px; padding: 12px 6px; display: flex; flex-direction: column; align-items: center; gap: 7px; box-shadow: 0 0 20px rgba(255,0,51,0.8), inset 0 0 10px rgba(255,0,51,0.3); transform: translateZ(20px); animation: floatPanel 3s ease-in-out infinite; }
+@keyframes floatPanel { 0%,100% { transform: translateX(-50%) translateZ(20px); } 50% { transform: translateX(-50%) translateZ(30px); } }
+.bot-phien { font-size: 10px; color: #ffaa00; font-weight: 900; text-shadow: 0 0 5px rgba(255,170,0,0.7); white-space: nowrap; }
+.bot-pred { font-size: 22px; font-weight: 900; white-space: nowrap; transition: all 0.3s; }
+.bot-pred.tai { color: #ff2a4b; text-shadow: 0 0 15px #ff2a4b; }
+.bot-pred.xiu { color: #0077ff; text-shadow: 0 0 15px #0077ff; }
+.bot-pred.loading { color: #888; animation: pulse 0.8s infinite alternate; }
+@keyframes pulse { from { opacity: 0.4; } to { opacity: 1; } }
+.bot-tile { font-size: 11px; font-weight: 900; color: #00ff66; text-shadow: 0 0 5px rgba(0,255,102,0.7); white-space: nowrap; }
+.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px); background: rgba(255,0,51,0.95); color: #fff; padding: 12px 20px; border-radius: 8px; font-size: 13px; font-weight: 700; z-index: 99999; opacity: 0; transition: all 0.3s; max-width: 90vw; text-align: center; }
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+</style>
+</head>
+<body>
+
+<div id="gameContainer">
+  <div class="menu-top">
+    <button class="btn-toggle" onclick="document.querySelector('.dropdown').classList.toggle('show')"><i class="fas fa-bars"></i></button>
+    <div class="dropdown" id="dropdownMenu">
+      <button class="menu-item" onclick="toggleRobot()"><i class="fas fa-robot"></i> Bật/Ẩn Robot</button>
+      <button class="menu-item" onclick="resetRobot()"><i class="fas fa-crosshairs"></i> Về vị trí gốc</button>
+      <button class="menu-item" onclick="window.location.href='index.html'"><i class="fas fa-home"></i> Về trang chủ</button>
+      <button class="menu-item exit" onclick="exitTool()"><i class="fas fa-right-from-bracket"></i> Thoát</button>
+    </div>
+  </div>
+
+  <div class="robot-node" id="robotNode">
+    <div class="robot-inner">
+      <img src="https://i.postimg.cc/ZYsRk0pD/robot-phan-tich-v12.gif" class="robot-gif" alt="Robot AI" onerror="this.style.opacity=0.3">
+      <div class="bot-panel" id="botPanel">
+        <div class="bot-phien" id="botPhien">PHIÊN: ---</div>
+        <div class="bot-pred loading" id="botPred">ĐANG TẢI</div>
+        <div class="bot-tile" id="botTile">TỈ LỆ: --%</div>
+      </div>
+    </div>
+  </div>
+
+  <iframe id="mainIframe" class="iframe-container" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+</div>
+
+<script>
+const API_MD5 = 'https://studious-octo-umbrella-wgt1.onrender.com/api/predict/md5';
+const API_SICBO = 'https://studious-octo-umbrella-wgt1.onrender.com/api/predict/taixiu';
+const API_SUNWIN = 'https://shiny-spork.onrender.com/api/du-doan';
+
+const params = new URLSearchParams(location.search);
+const gameName = params.get('game') || 'sunwin_taixiu';
+const gameType = params.get('type') || 'md5';
+
+// Mở iframe game gốc
+const gameLink = localStorage.getItem('gameIframe') || 'https://web.sunwin.tirol/?affId=Sunwin';
+document.getElementById('mainIframe').src = gameLink;
+
+// Chọn API theo game
+let apiUrl = API_MD5;
+if (gameType === 'sicbo') apiUrl = API_SICBO;
+if (gameName.includes('sunwin')) apiUrl = API_SUNWIN;
+
+// ====== FETCH PREDICTION ======
+let lastPhien = null;
+async function fetchPrediction() {
+  try {
+    const res = await fetch(apiUrl, { cache: 'no-store' });
+    const data = await res.json();
+
+    let phien, pred, tile;
+    if (gameType === 'sicbo') {
+      phien = data.phienDuDoan || data['phiên dự đoán'] || '--';
+      pred = (data.duDoan || data['dự đoán'] || '--').toUpperCase();
+      tile = data.tiLe || data['tỉ lệ'] || '--';
+    } else if (gameName.includes('sunwin')) {
+      phien = data['phiên dự đoán'] || '--';
+      pred = (data['dự đoán'] || '--').toUpperCase();
+      tile = data['tỉ lệ'] || '--';
+    } else {
+      phien = data.phienDuDoan || '--';
+      pred = (data.duDoan || '--').toUpperCase();
+      tile = data.tiLe || '--';
+    }
+
+    document.getElementById('botPhien').textContent = 'PHIÊN: #' + phien;
+
+    const predEl = document.getElementById('botPred');
+    predEl.classList.remove('loading', 'tai', 'xiu');
+
+    if (phien !== lastPhien) {
+      lastPhien = phien;
+      predEl.textContent = '••••';
+      predEl.classList.add('loading');
+      setTimeout(() => {
+        predEl.textContent = pred;
+        predEl.classList.remove('loading');
+        if (pred.includes('TÀI') || pred === 'T') predEl.classList.add('tai');
+        else predEl.classList.add('xiu');
+      }, 1500);
+    } else {
+      predEl.textContent = pred;
+      if (pred.includes('TÀI') || pred === 'T') predEl.classList.add('tai');
+      else predEl.classList.add('xiu');
+    }
+
+    document.getElementById('botTile').textContent = 'TỈ LỆ: ' + tile;
+  } catch (e) {
+    console.warn('API error:', e);
+  }
+}
+
+fetchPrediction();
+setInterval(fetchPrediction, 5000);
+
+// ====== KÉO THẢ ROBOT ======
+const robot = document.getElementById('robotNode');
+let dragging = false, sx = 0, sy = 0, ox = 0, oy = 0;
+function startDrag(e) {
+  dragging = true;
+  const p = e.touches ? e.touches[0] : e;
+  sx = p.clientX; sy = p.clientY;
+  ox = robot.offsetLeft; oy = robot.offsetTop;
+  robot.style.right = 'auto'; robot.style.bottom = 'auto';
+}
+function doDrag(e) {
+  if (!dragging) return;
+  const p = e.touches ? e.touches[0] : e;
+  robot.style.left = Math.max(0, ox + p.clientX - sx) + 'px';
+  robot.style.top = Math.max(0, oy + p.clientY - sy) + 'px';
+}
+function stopDrag() { dragging = false; }
+robot.addEventListener('mousedown', startDrag);
+window.addEventListener('mousemove', doDrag);
+window.addEventListener('mouseup', stopDrag);
+robot.addEventListener('touchstart', startDrag, { passive: true });
+window.addEventListener('touchmove', doDrag, { passive: true });
+window.addEventListener('touchend', stopDrag);
+
+function toggleRobot() {
+  robot.classList.toggle('hidden');
+}
+function resetRobot() {
+  robot.style.left = 'auto'; robot.style.top = 'auto';
+  robot.style.right = '20px'; robot.style.bottom = '80px';
+  robot.classList.remove('hidden');
+}
+function exitTool() {
+  if (confirm('Thoát tool?')) window.location.href = 'about:blank';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>HOÀNG VIP WIN - Kho Tool Game AI</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo-box">
+    <div class="logo-icon"><i class="fas fa-crown"></i></div>
+    <div>
+      <h1>HOÀNG VIP WIN</h1>
+      <span class="subtitle">Kho Tool Game AI - Phiên bản 2026</span>
+    </div>
+  </div>
+  <div class="header-stats">
+    <div class="stat"><i class="fas fa-users"></i> <span id="onlineCount">1,247</span> online</div>
+    <div class="stat"><i class="fas fa-download"></i> <span>58,392</span> đã dùng</div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <h2>🎮 KHO TOOL GAME AI CHUẨN XÁC 99%</h2>
+  <p>Hệ thống phân tích AI tiên tiến nhất Việt Nam - Hỗ trợ Tài Xỉu, Sicbo, Volta với tỉ lệ thắng cao</p>
+  <div class="hero-buttons">
+    <a href="auth.html" class="btn-primary"><i class="fas fa-rocket"></i> Bắt đầu ngay</a>
+    <a href="key.html" class="btn-secondary"><i class="fas fa-key"></i> Mua Key VIP</a>
+  </div>
+</section>
+
+<!-- DANH SÁCH GAME -->
+<section class="games-section">
+  <h2 class="section-title"><i class="fas fa-gamepad"></i> Danh sách Game hỗ trợ</h2>
+
+  <!-- TÀI XỈU -->
+  <div class="category">
+    <h3 class="category-title"><i class="fas fa-dice"></i> Tài Xỉu (10 game)</h3>
+    <div class="game-grid" id="taixiuGrid"></div>
+  </div>
+
+  <!-- SICBO -->
+  <div class="category">
+    <h3 class="category-title"><i class="fas fa-dice-d6"></i> Sicbo Game (4 game)</h3>
+    <div class="game-grid" id="sicboGrid"></div>
+  </div>
+
+  <!-- VOLTA -->
+  <div class="category">
+    <h3 class="category-title"><i class="fas fa-bolt"></i> Volta Game (1 game)</h3>
+    <div class="game-grid" id="voltaGrid"></div>
+  </div>
+</section>
+
+<!-- GIỚI THIỆU DÀI -->
+<section class="about-section">
+  <h2 class="section-title"><i class="fas fa-info-circle"></i> Giới thiệu về hệ thống</h2>
+  <div class="about-content">
+    <div class="about-card">
+      <i class="fas fa-brain"></i>
+      <h4>Công nghệ AI V12</h4>
+      <p>Hệ thống sử dụng trí tuệ nhân tạo thế hệ mới, phân tích dữ liệu lịch sử hàng triệu phiên để đưa ra dự đoán chính xác nhất. Thuật toán MD5 và Sicbo được tối ưu riêng cho từng game.</p>
+    </div>
+    <div class="about-card">
+      <i class="fas fa-shield-alt"></i>
+      <h4>Bảo mật tuyệt đối</h4>
+      <p>Mọi dữ liệu người dùng được mã hóa an toàn. Hệ thống xác thực OTP qua Telegram đảm bảo chỉ người dùng chính chủ mới truy cập được tool.</p>
+    </div>
+    <div class="about-card">
+      <i class="fas fa-chart-line"></i>
+      <h4>Tỉ lệ thắng cao</h4>
+      <p>Với hơn 58,000 người dùng tin tưởng, tỉ lệ dự đoán chính xác trung bình đạt 92-99% tùy game. Hệ thống cập nhật kết quả realtime mỗi 5 giây.</p>
+    </div>
+    <div class="about-card">
+      <i class="fas fa-bolt"></i>
+      <h4>Tốc độ siêu nhanh</h4>
+      <p>Tool được tối ưu hóa, chạy mượt không lag trên mọi thiết bị. Giao diện 3D hiện đại, thao tác đơn giản chỉ với vài cú chạm.</p>
+    </div>
+    <div class="about-card">
+      <i class="fas fa-headset"></i>
+      <h4>Hỗ trợ 24/7</h4>
+      <p>Đội ngũ admin luôn sẵn sàng hỗ trợ qua Telegram. Mọi thắc mắc về key, OTP, game đều được giải đáp nhanh chóng.</p>
+    </div>
+    <div class="about-card">
+      <i class="fas fa-sync-alt"></i>
+      <h4>Cập nhật liên tục</h4>
+      <p>Tool được cập nhật thường xuyên, thêm game mới, fix bug và nâng cấp thuật toán AI. Đảm bảo luôn dẫn đầu xu hướng.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LIÊN HỆ ADMIN -->
+<footer class="footer">
+  <h3><i class="fas fa-headset"></i> Liên hệ Admin</h3>
+  <div class="contact-buttons">
+    <a href="https://t.me/tranhoang2286" target="_blank" class="contact-btn">
+      <i class="fab fa-telegram"></i> Admin: @tranhoang2286
+    </a>
+    <a href="https://t.me/ongvuaphantich" target="_blank" class="contact-btn">
+      <i class="fab fa-telegram"></i> Group: @ongvuaphantich
+    </a>
+  </div>
+  <p class="copyright">© 2026 HOÀNG VIP WIN - All Rights Reserved</p>
+</footer>
+
+<script>
+// Cấu hình game
+const GAMES = {
+  taixiu: [
+    { name: 'Sunwin', logo: 'https://i.postimg.cc/y6wrZ8xx/IMG-7874.jpg', link: 'https://web.sunwin.tirol/?affId=Sunwin', tool: 'tool.html?game=sunwin_taixiu&type=sicbo' },
+    { name: 'Hitclub', logo: 'https://i.postimg.cc/L6LQBFgT/IMG-7875.jpg', link: 'https://hitclub.bet', tool: 'tool.html?game=hitclub_taixiu&type=md5' },
+    { name: 'B52', logo: 'https://i.postimg.cc/ZKdxtPTK/IMG-7873.jpg', link: 'https://b52.club', tool: 'tool.html?game=b52_taixiu&type=md5' },
+    { name: 'Max789', logo: 'https://i.postimg.cc/vTb5pTnV/IMG-2232.jpg', link: 'https://play.max789e.vin', tool: 'tool.html?game=max789_taixiu&type=md5' },
+    { name: 'Luck8', logo: 'https://i.postimg.cc/vTb5pTnV/IMG-2232.jpg', link: 'https://luck8.bet', tool: 'tool.html?game=luck8_taixiu&type=sicbo', maintenance: true },
+    { name: 'LC79', logo: 'https://i.postimg.cc/C16fC9My/IMG-0544.jpg', link: 'https://lc79.bet', tool: 'tool.html?game=lc79_taixiu&type=md5' },
+    { name: 'BetVIP', logo: 'https://i.postimg.cc/0QcNyy3N/IMG-2234.jpg', link: 'https://betvip.bet', tool: 'tool.html?game=betvip_taixiu&type=md5' },
+    { name: 'Son789', logo: '', link: '#', tool: '', maintenance: true },
+    { name: 'SumClub', logo: 'https://i.postimg.cc/VLMdjmbv/IMG-2235.png', link: 'https://sumclub.bet', tool: 'tool.html?game=sumclub_taixiu&type=md5' },
+    { name: 'BCR', logo: '', link: '#', tool: '', maintenance: true }
+  ],
+  sicbo: [
+    { name: 'Sicbo Sunwin', logo: 'https://i.postimg.cc/y6wrZ8xx/IMG-7874.jpg', link: 'https://web.sunwin.tirol', tool: 'tool.html?game=sicbo_sunwin&type=sicbo' },
+    { name: 'Sicbo Hitclub', logo: 'https://i.postimg.cc/L6LQBFgT/IMG-7875.jpg', link: 'https://hitclub.bet', tool: 'tool.html?game=sicbo_hitclub&type=sicbo' },
+    { name: 'Sicbo B52', logo: 'https://i.postimg.cc/ZKdxtPTK/IMG-7873.jpg', link: 'https://b52.club', tool: 'tool.html?game=sicbo_b52&type=sicbo' },
+    { name: 'Sicbo Luck8', logo: '', link: '#', tool: '', maintenance: true }
+  ],
+  volta: [
+    { name: 'Volta Sunwin', logo: 'https://i.postimg.cc/y6wrZ8xx/IMG-7874.jpg', link: 'https://web.sunwin.tirol', tool: 'tool.html?game=volta_sunwin&type=volta' }
+  ]
+};
+
+function renderGameCard(game) {
+  if (game.maintenance) {
+    return `
+      <div class="game-card maintenance" onclick="showToast('Game đang bảo trì, vui lòng quay lại sau!')">
+        <div class="game-logo"><i class="fas fa-tools"></i></div>
+        <div class="game-name">${game.name}</div>
+        <div class="badge">Bảo trì</div>
+      </div>
+    `;
+  }
+  return `
+    <div class="game-card" onclick="openGame('${game.tool}', '${game.link}')">
+      <div class="game-logo">
+        <img src="${game.logo}" alt="${game.name}" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\\'fas fa-gamepad\\'></i>'">
+      </div>
+      <div class="game-name">${game.name}</div>
+      <div class="badge active">Hoạt động</div>
+    </div>
+  `;
+}
+
+document.getElementById('taixiuGrid').innerHTML = GAMES.taixiu.map(renderGameCard).join('');
+document.getElementById('sicboGrid').innerHTML = GAMES.sicbo.map(renderGameCard).join('');
+document.getElementById('voltaGrid').innerHTML = GAMES.volta.map(renderGameCard).join('');
+
+function openGame(toolUrl, link) {
+  if (!toolUrl) return showToast('Game chưa cập nhật!');
+  // Lưu link game gốc để tool mở iframe
+  localStorage.setItem('gameIframe', link);
+  window.location.href = toolUrl;
+}
+
+// Counter online giả lập
+setInterval(() => {
+  const el = document.getElementById('onlineCount');
+  const base = 1200 + Math.floor(Math.random() * 100);
+  el.textContent = base.toLocaleString();
+}, 5000);
+
+// Toast
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.classList.add('show'), 10);
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 2500);
+}
+</script>
+</body>
+</html>

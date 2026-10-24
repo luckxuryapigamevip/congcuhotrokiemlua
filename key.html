@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>HOÀNG VIP WIN - Mua Key</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+.key-container { max-width: 900px; margin: 40px auto; padding: 20px; }
+.price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin: 25px 0; }
+.price-card { background: linear-gradient(145deg, rgba(15,2,6,0.95), rgba(40,5,15,0.95)); border: 2px solid #333; border-radius: 15px; padding: 25px 15px; text-align: center; cursor: pointer; transition: all 0.3s; }
+.price-card:hover, .price-card.selected { border-color: var(--neon-red); box-shadow: 0 0 25px rgba(255,0,51,0.4); transform: translateY(-4px); }
+.price-card .duration { font-size: 16px; color: #ffaa00; font-weight: 900; margin-bottom: 10px; }
+.price-card .price { font-size: 26px; color: #fff; font-weight: 900; margin-bottom: 5px; }
+.price-card .price small { font-size: 13px; color: #888; }
+.qr-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+.qr-modal.show { display: flex; }
+.qr-box { background: #fff; border-radius: 20px; padding: 25px; max-width: 420px; width: 100%; text-align: center; position: relative; }
+.qr-box h3 { color: #333; margin-bottom: 5px; }
+.qr-box .amount { color: #ff0033; font-size: 24px; font-weight: 900; margin: 10px 0; }
+.qr-box .content-transfer { background: #fff5f5; border: 2px dashed #ff0033; padding: 10px; border-radius: 8px; margin: 12px 0; font-size: 13px; color: #333; word-break: break-all; }
+.qr-box img { width: 260px; height: 260px; margin: 10px auto; display: block; border-radius: 10px; }
+.qr-box .bank-info { background: #f0f0f0; padding: 10px; border-radius: 8px; margin: 10px 0; font-size: 13px; color: #333; text-align: left; }
+.qr-box .bank-info b { color: #ff0033; }
+.qr-actions { display: flex; gap: 10px; margin-top: 15px; }
+.qr-actions button { flex: 1; padding: 13px; border: none; border-radius: 8px; font-weight: 900; cursor: pointer; font-size: 14px; }
+.btn-check { background: linear-gradient(135deg, #00c853, #007a33); color: #fff; }
+.btn-cancel { background: #e0e0e0; color: #333; }
+.key-result { display: none; text-align: center; padding: 20px; background: linear-gradient(145deg, #1a1a2e, #16213e); border-radius: 15px; border: 2px solid #00ff66; margin-top: 20px; }
+.key-result.show { display: block; animation: popIn 0.4s; }
+@keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.key-result .key-val { font-size: 22px; font-weight: 900; color: #00ff66; letter-spacing: 3px; padding: 15px; background: rgba(0,0,0,0.5); border-radius: 8px; margin: 15px 0; word-break: break-all; }
+.key-result input { width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #444; background: #000; color: #fff; font-size: 15px; margin-top: 15px; }
+</style>
+</head>
+<body>
+
+<div class="key-container">
+  <h1 style="text-align:center;color:var(--neon-red);"><i class="fas fa-key"></i> MUA KEY VIP</h1>
+  <p style="text-align:center;color:#888;margin-bottom:20px;">Chọn gói phù hợp để sử dụng tool AI không giới hạn</p>
+
+  <div class="price-grid">
+    <div class="price-card" data-days="1" data-price="12000" data-label="1 Ngày">
+      <div class="duration">1 NGÀY</div>
+      <div class="price">12.000<small>đ</small></div>
+    </div>
+    <div class="price-card" data-days="3" data-price="40000" data-label="3 Ngày">
+      <div class="duration">3 NGÀY</div>
+      <div class="price">40.000<small>đ</small></div>
+    </div>
+    <div class="price-card" data-days="7" data-price="80000" data-label="1 Tuần">
+      <div class="duration">1 TUẦN</div>
+      <div class="price">80.000<small>đ</small></div>
+    </div>
+    <div class="price-card" data-days="30" data-price="120000" data-label="1 Tháng">
+      <div class="duration">1 THÁNG</div>
+      <div class="price">120.000<small>đ</small></div>
+    </div>
+    <div class="price-card" data-days="9999" data-price="199000" data-label="Vĩnh viễn">
+      <div class="duration">VĨNH VIỄN</div>
+      <div class="price">199.000<small>đ</small></div>
+    </div>
+  </div>
+
+  <div class="key-result" id="keyResult">
+    <i class="fas fa-check-circle" style="font-size:48px;color:#00ff66;"></i>
+    <h3 style="color:#00ff66;margin:10px 0;">THANH TOÁN THÀNH CÔNG!</h3>
+    <p style="color:#ccc;">Mã Key của bạn:</p>
+    <div class="key-val" id="keyValue">----</div>
+    <input type="text" id="activateInput" placeholder="Nhập key để kích hoạt...">
+    <button class="btn-submit" style="margin-top:10px;" onclick="activateKey()"><i class="fas fa-check"></i> Kích hoạt ngay</button>
+  </div>
+
+  <p style="text-align:center;margin-top:30px;"><a href="index.html" style="color:var(--neon-red);"><i class="fas fa-arrow-left"></i> Quay về trang chủ</a></p>
+</div>
+
+<!-- QR MODAL -->
+<div class="qr-modal" id="qrModal">
+  <div class="qr-box">
+    <h3><i class="fas fa-qrcode"></i> Quét mã QR để thanh toán</h3>
+    <div class="amount" id="qrAmount">0đ</div>
+    <div class="content-transfer" id="qrContent">ND: ...</div>
+    <img id="qrImage" src="" alt="QR">
+    <div class="bank-info">
+      <p><b>Ngân hàng:</b> VIETCOMBANK</p>
+      <p><b>Số TK:</b> 3382962182</p>
+      <p><b>Chủ TK:</b> TRAN NHAT HOANG</p>
+    </div>
+    <div class="qr-actions">
+      <button class="btn-check" onclick="checkPayment()"><i class="fas fa-check"></i> Đã chuyển khoản</button>
+      <button class="btn-cancel" onclick="cancelPayment()"><i class="fas fa-times"></i> Hủy</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ADMIN_BOT_TOKEN = '8995301700:AAHIYK6ei30dgELRh3w2YZb31hcGfXdvxTo';
+const BUYKEY_BOT_TOKEN = '8899402629:AAFnNM6lxJPc1aQg6kXbG_f79PEvdoTb6sk';
+const ADMIN_CHAT_ID = '7757046138';
+
+let selectedPlan = null;
+let currentOrderId = null;
+
+document.querySelectorAll('.price-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.price-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedPlan = {
+      days: +card.dataset.days,
+      price: +card.dataset.price,
+      label: card.dataset.label
+    };
+    showQR(selectedPlan);
+  });
+});
+
+function genOrderId() {
+  return 'HVW' + Date.now().toString(36).toUpperCase() + Math.floor(Math.random() * 1000);
+}
+
+function showQR(plan) {
+  currentOrderId = genOrderId();
+  const amount = plan.price;
+  const content = `${currentOrderId} ${plan.label.replace(/\s/g, '')}`;
+
+  document.getElementById('qrAmount').textContent = amount.toLocaleString('vi-VN') + 'đ';
+  document.getElementById('qrContent').textContent = 'ND: ' + content;
+
+  // QR VietQR chuẩn
+  const qrUrl = `https://img.vietqr.io/image/VCB-3382962182-compact2.png?amount=${amount}&addInfo=${encodeURIComponent(content)}&accountName=TRAN%20NHAT%20HOANG`;
+  document.getElementById('qrImage').src = qrUrl;
+
+  document.getElementById('qrModal').classList.add('show');
+  document.getElementById('keyResult').classList.remove('show');
+}
+
+function cancelPayment() {
+  document.getElementById('qrModal').classList.remove('show');
+  alert('Bạn chưa chuyển khoản!');
+  // Báo admin hủy đơn
+  fetch(`https://api.telegram.org/bot${ADMIN_BOT_TOKEN}/sendMessage`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: `❌ HỦY ĐƠN\nMã đơn: ${currentOrderId}\nGói: ${selectedPlan?.label}\nGiá: ${selectedPlan?.price?.toLocaleString()}đ` })
+  }).catch(()=>{});
+}
+
+function checkPayment() {
+  // Gửi yêu cầu duyệt đơn
+  const msg = `💰 YÊU CẦU DUYỆT ĐƠN\n\n` +
+    `Mã đơn: ${currentOrderId}\n` +
+    `Gói: ${selectedPlan.label} (${selectedPlan.days === 9999 ? 'Vĩnh viễn' : selectedPlan.days + ' ngày'})\n` +
+    `Số tiền: ${selectedPlan.price.toLocaleString('vi-VN')}đ\n` +
+    `⏰ ${new Date().toLocaleString('vi-VN')}\n\n` +
+    `Reply "OK ${currentOrderId}" để duyệt.`;
+
+  fetch(`https://api.telegram.org/bot${ADMIN_BOT_TOKEN}/sendMessage`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: msg })
+  }).catch(()=>{});
+
+  fetch(`https://api.telegram.org/bot${BUYKEY_BOT_TOKEN}/sendMessage`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: msg })
+  }).catch(()=>{});
+
+  alert('Đã gửi yêu cầu duyệt đơn! Vui lòng chờ admin xác nhận trong 1-2 phút.\nSau khi duyệt, key sẽ hiện ra trên màn hình.');
+  document.getElementById('qrModal').classList.remove('show');
+
+  // Giả lập chờ duyệt (trong thực tế cần webhook hoặc polling)
+  // Demo: tự sinh key sau 8 giây
+  setTimeout(() => {
+    if (confirm('Admin đã duyệt đơn của bạn!\nBạn có muốn lấy key ngay không?')) {
+      const key = generateKey();
+      localStorage.setItem('pendingKey_' + key, JSON.stringify({
+        days: selectedPlan.days,
+        price: selectedPlan.price,
+        createdAt: Date.now(),
+        activated: false
+      }));
+      showKey(key);
+    }
+  }, 8000);
+}
+
+function generateKey() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let k = 'HVW-';
+  for (let i = 0; i < 4; i++) k += chars[Math.floor(Math.random() * chars.length)];
+  k += '-';
+  for (let i = 0; i < 4; i++) k += chars[Math.floor(Math.random() * chars.length)];
+  k += '-';
+  for (let i = 0; i < 4; i++) k += chars[Math.floor(Math.random() * chars.length)];
+  return k;
+}
+
+function showKey(key) {
+  document.getElementById('keyValue').textContent = key;
+  document.getElementById('keyResult').classList.add('show');
+}
+
+function activateKey() {
+  const key = document.getElementById('activateInput').value.trim();
+  const saved = localStorage.getItem('pendingKey_' + key);
+  if (!saved) return alert('Key không hợp lệ hoặc chưa được duyệt!');
+  const data = JSON.parse(saved);
+  data.activated = true;
+  data.activateTime = Date.now();
+  data.expireTime = data.days === 9999 ? 9999999999999 : Date.now() + data.days * 86400000;
+  localStorage.setItem('activeKey', JSON.stringify({ key, ...data }));
+  alert('Kích hoạt thành công! Hạn sử dụng: ' + (data.days === 9999 ? 'Vĩnh viễn' : new Date(data.expireTime).toLocaleString('vi-VN')));
+  window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>
